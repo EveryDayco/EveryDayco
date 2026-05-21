@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EveryDayco - Tu Tienda de productos infaltables</title>
+    <title>Beauty Store - Tu Tienda de Belleza</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -20,7 +20,7 @@
         <div class="container">
             <div class="logo">
                 <i class="fas fa-sparkles"></i>
-                <h1>EveryDayco</h1>
+                <h1>Beauty Store</h1>
             </div>
             
             <nav class="navbar">
@@ -45,8 +45,8 @@
          ======================================== -->
     <section id="tiendaSection" class="section active">
         <div class="container">
-            <h2 class="section-title">Bienvenid@ a EveryDayco</h2>
-            <p class="section-subtitle">¡Descubre los mejores productos infaltables en tu día a día!</p>
+            <h2 class="section-title">Bienvenido a Nuestra Tienda</h2>
+            <p class="section-subtitle">Descubre los mejores productos de belleza</p>
 
             <!-- Buscador y Filtros -->
             <div class="filtros-container">
@@ -119,7 +119,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="precio">Precio ($) *</label>
+                            <label for="precio">Precio (COP) *</label>
                             <input type="text" id="precio" required placeholder="Ej: 69.000">
                         </div>
 
@@ -129,8 +129,21 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="imagen">URL de la Imagen *</label>
-                            <input type="url" id="imagen" required placeholder="https://...">
+                            <label>Imagen del Producto *</label>
+                            <div class="imagen-upload-container">
+                                <div class="upload-option">
+                                    <label for="imagenArchivo" class="btn-upload">
+                                        <i class="fas fa-upload"></i> Subir desde galería / descargas
+                                    </label>
+                                    <input type="file" id="imagenArchivo" accept="image/*" style="display:none">
+                                </div>
+                                <div class="upload-divider">ó</div>
+                                <input type="url" id="imagen" placeholder="Pegar URL de imagen (https://...)" style="margin-top:0">
+                                <div id="imagenPreview" class="imagen-preview" style="display:none">
+                                    <img id="imagenPreviewImg" src="" alt="Vista previa">
+                                    <button type="button" id="quitarImagen" class="btn-quitar-imagen">✕ Quitar</button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
