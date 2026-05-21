@@ -9,6 +9,7 @@
 let usuarioActual = null;
 let productosActuales = [];
 let esAdmin = false;
+let imagenBase64 = null; // imagen subida desde galería
 
 // ========================================
 // FORMATO MONEDA COLOMBIANA
@@ -96,7 +97,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
             cargarProductos();
         })
         .catch((error) => {
-            mostrarNotificacion('Error: No se encuentra registrado ese usuario ¡Registrate!');
+            mostrarNotificacion('Error: Usuario no encontrado ¡Registrate!' );
         });
 });
 
@@ -192,6 +193,42 @@ function configurarEventListeners() {
     });
     
     document.getElementById('formProducto').addEventListener('submit', agregarProducto);
+
+    // --- Uploader de imagen ---
+    const imagenArchivo = document.getElementById('imagenArchivo');
+    const imagenUrlInput = document.getElementById('imagen');
+    const imagenPreview = document.getElementById('imagenPreview');
+    const imagenPreviewImg = document.getElementById('imagenPreviewImg');
+    const quitarImagen = document.getElementById('quitarImagen');
+
+    imagenArchivo.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            imagenBase64 = ev.target.result;
+            imagenPreviewImg.src = imagenBase64;
+            imagenPreview.style.display = 'flex';
+            imagenUrlInput.value = '';
+            imagenUrlInput.removeAttribute('required');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    imagenUrlInput.addEventListener('input', () => {
+        if (imagenUrlInput.value) {
+            imagenBase64 = null;
+            imagenArchivo.value = '';
+            imagenPreview.style.display = 'none';
+        }
+    });
+
+    quitarImagen.addEventListener('click', () => {
+        imagenBase64 = null;
+        imagenArchivo.value = '';
+        imagenPreview.style.display = 'none';
+        imagenUrlInput.setAttribute('required', '');
+    });
     document.getElementById('searchInput').addEventListener('input', filtrarProductos);
     document.getElementById('categoryFilter').addEventListener('change', filtrarProductos);
     
@@ -249,7 +286,7 @@ async function agregarProducto(e) {
         categoria: document.getElementById('categoria').value,
         precio: parsearPrecioCOP(document.getElementById('precio').value),
         descripcion: document.getElementById('descripcion').value,
-        imagen: document.getElementById('imagen').value,
+        imagen: imagenBase64 || document.getElementById('imagen').value,
         linkCompra: document.getElementById('linkCompra').value,
         usuarioId: usuarioActual.uid,
         email: usuarioActual.email,
@@ -261,6 +298,11 @@ async function agregarProducto(e) {
         
         mostrarNotificacion('✅ Producto agregado exitosamente', 'success');
         document.getElementById('formProducto').reset();
+    imagenBase64 = null;
+    const prev = document.getElementById('imagenPreview');
+    if (prev) { prev.style.display = 'none'; }
+    const imgInput = document.getElementById('imagen');
+    if (imgInput) imgInput.setAttribute('required', '');
         cargarProductosAdmin();
         cargarProductos();
     } catch (error) {
@@ -447,7 +489,7 @@ function editarProducto(productoId) {
                 categoria: document.getElementById('categoria').value,
                 precio: parsearPrecioCOP(document.getElementById('precio').value),
                 descripcion: document.getElementById('descripcion').value,
-                imagen: document.getElementById('imagen').value,
+                imagen: imagenBase64 || document.getElementById('imagen').value,
                 linkCompra: document.getElementById('linkCompra').value,
                 usuarioId: usuarioActual.uid,
                 email: usuarioActual.email,
