@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EveryDayco - Tu Tienda de productos infaltables</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- ========================================
+         NOTIFICACIÓN GLOBAL
+         ======================================== -->
+    <div id="notificacion" class="notificacion"></div>
+
+    <!-- ========================================
+         HEADER / NAVEGACIÓN
+         ======================================== -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-sparkles"></i>
+                <h1>EveryDayco</h1>
+            </div>
+            
+            <nav class="navbar">
+                <button id="tiendaBtn" class="btn-nav active">
+                    <i class="fas fa-store"></i> Mi Tienda
+                </button>
+                <button id="adminBtn" class="btn-nav">
+                    <i class="fas fa-cog"></i> Admin
+                </button>
+                <button id="loginBtn" class="btn-nav btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Inicia Sesión
+                </button>
+                <button id="logoutBtn" class="btn-nav btn-logout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ========================================
+         SECCIÓN: TIENDA (VISTA CLIENTE)
+         ======================================== -->
+    <section id="tiendaSection" class="section active">
+        <div class="container">
+            <h2 class="section-title">Bienvenid@ a EveryDayco</h2>
+            <p class="section-subtitle">¡Descubre los mejores productos infaltables en tu día a día!</p>
+
+            <!-- Buscador y Filtros -->
+            <div class="filtros-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Buscar productos..."
+                        class="search-input"
+                    >
+                </div>
+
+                <select id="categoryFilter" class="category-filter">
+                    <option value="">Todas las Categorías</option>
+                    <option value="Maquillaje">Maquillaje</option>
+                    <option value="Cuidado de la Piel">Cuidado de la Piel</option>
+                    <option value="Cabello">Cabello</option>
+                    <option value="Fragancias">Fragancias</option>
+                    <option value="Accesorios">Accesorios</option>
+                    <option value="Complementos">Complementos</option>
+                </select>
+            </div>
+
+            <!-- Grid de Productos -->
+            <div id="productosGrid" class="productos-grid">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Cargando productos...</p>
+                </div>
+            </div>
+
+            <!-- Sin Productos -->
+            <div id="sinProductos" class="sin-productos" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <p>No hay productos disponibles en este momento</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         SECCIÓN: ADMIN
+         ======================================== -->
+    <section id="adminSection" class="section">
+        <div class="container">
+            <h2 class="section-title">Panel de Administración</h2>
+
+            <div class="admin-layout">
+                <!-- Formulario Agregar Producto -->
+                <div class="admin-form-container">
+                    <h3><i class="fas fa-plus-circle"></i> Agregar Producto</h3>
+                    
+                    <form id="formProducto" class="form-producto">
+                        <div class="form-group">
+                            <label for="nombre">Nombre del Producto *</label>
+                            <input type="text" id="nombre" required placeholder="Ej: Labial Rojo Premium">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoria">Categoría *</label>
+                            <select id="categoria" required>
+                                <option value="">Selecciona una categoría</option>
+                                <option value="Maquillaje">Maquillaje</option>
+                                <option value="Cuidado de la Piel">Cuidado de la Piel</option>
+                                <option value="Cabello">Cabello</option>
+                                <option value="Fragancias">Fragancias</option>
+                                <option value="Accesorios">Accesorios</option>
+                                <option value="Complementos">Complementos</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="precio">Precio ($) *</label>
+                            <input type="text" id="precio" required placeholder="Ej: 69.000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descripcion">Descripción *</label>
+                            <textarea id="descripcion" required placeholder="Describe el producto..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="imagen">URL de la Imagen *</label>
+                            <input type="url" id="imagen" required placeholder="https://...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="linkCompra">Link de Compra (Tu Link de Afiliado) *</label>
+                            <input type="url" id="linkCompra" required placeholder="https://amazon.com/mi-link-afiliado">
+                            <small>💡 Usa tus links de afiliado para ganar comisiones</small>
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-full">
+                            <i class="fas fa-plus"></i> Agregar Producto
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Lista de Productos del Admin -->
+                <div class="admin-productos-container">
+                    <h3><i class="fas fa-list"></i> Tus Productos</h3>
+                    <div id="productosAdmin" class="productos-admin-list">
+                        <p>Cargando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================
+         MODAL: LOGIN / SIGNUP
+         ======================================== -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+
+            <!-- Formulario Login -->
+            <form id="loginForm" class="auth-form active-form">
+                <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
+                
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                
+                <button type="submit" class="btn-primary btn-full">Inicia Sesión</button>
+                
+                <p class="auth-toggle">¿No tienes cuenta? <a href="#" id="toggleSignup">Crear una</a></p>
+            </form>
+
+            <!-- Formulario Signup -->
+            <form id="signupForm" class="auth-form" style="display: none;">
+                <h2><i class="fas fa-user-plus"></i> Crear Cuenta</h2>
+                
+                <input type="email" id="signupEmail" placeholder="Email" required>
+                <input type="password" id="signupPassword" placeholder="Contraseña" required>
+                <input type="password" id="signupConfirm" placeholder="Confirmar Contraseña" required>
+                
+                <button type="submit" class="btn-primary btn-full">Crear Cuenta</button>
+                
+                <p class="auth-toggle">¿Ya tienes cuenta? <a href="#" id="toggleLogin">Inicia sesión</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================
+         MODAL: DETALLE PRODUCTO
+         ======================================== -->
+    <div id="detalleModal" class="modal">
+        <div class="modal-content modal-detalle">
+            <span class="close">&times;</span>
+
+            <div class="detalle-layout">
+                <img id="detalleImagen" src="" alt="Producto" class="detalle-imagen">
+                
+                <div class="detalle-info">
+                    <span id="detalleCategoria" class="detalle-categoria"></span>
+                    <h2 id="detalleNombre"></h2>
+                    <p id="detallePrecio" class="detalle-precio"></p>
+                    <p id="detalleDescripcion" class="detalle-descripcion"></p>
+                    
+                    <a id="linkCompraBtn" href="#" target="_blank" class="btn-primary btn-comprar-modal">
+                        <i class="fas fa-shopping-bag"></i> Ir a Comprar Ahora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       <!-- Firebase SDK (compat - expone objeto global firebase) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+<!-- Scripts de la app -->
+<script src="config-simple.js"></script>
+<script src="script-simple.js"></script>
+</body>
+</body>
+</html>
