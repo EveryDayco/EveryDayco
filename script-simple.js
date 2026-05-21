@@ -96,7 +96,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
             cargarProductos();
         })
         .catch((error) => {
-            mostrarNotificacion('Error: No se encuentra registrado ese usuario' + error.message, 'error');
+            mostrarNotificacion('Error: No se encuentra registrado ese usuario ¡Registrate!');
         });
 });
 
