@@ -307,7 +307,7 @@ async function agregarProducto(e) {
     };
     
     try {
-        await database.ref('productos').push().set(producto);
+        await database.ref('productos').push(producto);
         
         mostrarNotificacion('✅ Producto agregado exitosamente', 'success');
         document.getElementById('formProducto').reset();
@@ -333,7 +333,7 @@ function cargarProductos() {
         </div>
     `;
     
-    database.ref('productos').on('value', (snapshot) => {
+    database.ref('productos').once('value').then((snapshot) => {
         productosActuales = [];
         const data = snapshot.val();
         
@@ -434,7 +434,7 @@ function cargarProductosAdmin() {
         </div>
     `;
     
-    database.ref('productos').orderByChild('usuarioId').equalTo(usuarioActual.uid).on('value', (snapshot) => {
+    database.ref('productos').orderByChild('usuarioId').equalTo(usuarioActual.uid).once('value').then((snapshot) => {
         const productos = [];
         const data = snapshot.val();
         
@@ -519,7 +519,7 @@ function editarProducto(productoId) {
             };
             
             try {
-                await database.ref(`productos/${productoId}`).set(productoActualizado);
+                await database.ref(`productos/${productoId}`).update(productoActualizado);
                 mostrarNotificacion('✅ Producto actualizado correctamente', 'success');
                 form.reset();
                 imagenBase64 = null;
