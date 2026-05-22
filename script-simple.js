@@ -307,15 +307,15 @@ async function agregarProducto(e) {
     };
     
     try {
+        // Notificación inmediata antes de esperar Firebase
+        mostrarNotificacion('✅ Producto agregado exitosamente', 'success');
+
         const ref = await database.ref('productos').push(producto);
         producto.id = ref.key;
 
         // Actualizar lista local sin volver a consultar Firebase
         productosActuales.push(producto);
         mostrarProductos(productosActuales);
-
-        // Limpiar formulario
-        mostrarNotificacion('✅ Producto agregado exitosamente', 'success');
         document.getElementById('formProducto').reset();
         imagenBase64 = null;
         const prev = document.getElementById('imagenPreview');
@@ -598,7 +598,8 @@ function editarProducto(productoId) {
             };
             
             try {
-                await database.ref(`productos/${productoId}`).update(productoActualizado);
+                // Notificación inmediata antes de esperar Firebase
+                mostrarNotificacion('✅ Producto actualizado correctamente', 'success');
 
                 // Actualizar lista local sin volver a consultar Firebase
                 const idx = productosActuales.findIndex(p => p.id === productoId);
@@ -608,7 +609,7 @@ function editarProducto(productoId) {
                     mostrarProductos(productosActuales);
                 }
 
-                mostrarNotificacion('✅ Producto actualizado correctamente', 'success');
+                await database.ref(`productos/${productoId}`).update(productoActualizado);
                 formActivo.reset();
                 imagenBase64 = null;
                 const prev = document.getElementById('imagenPreview');
