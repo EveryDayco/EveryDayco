@@ -307,17 +307,24 @@ async function agregarProducto(e) {
     };
     
     try {
-        await database.ref('productos').push(producto);
-        
+        const ref = await database.ref('productos').push(producto);
+        producto.id = ref.key;
+
+        // Actualizar lista local sin volver a consultar Firebase
+        productosActuales.push(producto);
+        mostrarProductos(productosActuales);
+
+        // Limpiar formulario
         mostrarNotificacion('✅ Producto agregado exitosamente', 'success');
         document.getElementById('formProducto').reset();
-    imagenBase64 = null;
-    const prev = document.getElementById('imagenPreview');
-    if (prev) { prev.style.display = 'none'; }
-    const imgInput = document.getElementById('imagen');
-    if (imgInput) imgInput.setAttribute('required', '');
+        imagenBase64 = null;
+        const prev = document.getElementById('imagenPreview');
+        if (prev) prev.style.display = 'none';
+        const imgInput = document.getElementById('imagen');
+        if (imgInput) imgInput.setAttribute('required', '');
+
+        // Recargar panel admin en segundo plano (sin esperar)
         cargarProductosAdmin();
-        cargarProductos();
     } catch (error) {
         mostrarNotificacion('Error al agregar producto: ' + error.message, 'error');
     }
@@ -520,6 +527,15 @@ function editarProducto(productoId) {
             
             try {
                 await database.ref(`productos/${productoId}`).update(productoActualizado);
+
+                // Actualizar lista local sin volver a consultar Firebase
+                const idx = productosActuales.findIndex(p => p.id === productoId);
+                if (idx !== -1) {
+                    productoActualizado.id = productoId;
+                    productosActuales[idx] = productoActualizado;
+                    mostrarProductos(productosActuales);
+                }
+
                 mostrarNotificacion('✅ Producto actualizado correctamente', 'success');
                 form.reset();
                 imagenBase64 = null;
@@ -527,8 +543,9 @@ function editarProducto(productoId) {
                 if (prev) prev.style.display = 'none';
                 botonSubmit.innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
                 form.onsubmit = agregarProducto;
+
+                // Recargar panel admin en segundo plano (sin esperar)
                 cargarProductosAdmin();
-                cargarProductos();
             } catch (error) {
                 mostrarNotificacion('Error al actualizar: ' + error.message, 'error');
             }
