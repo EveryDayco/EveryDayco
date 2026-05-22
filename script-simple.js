@@ -498,10 +498,46 @@ function editarProducto(productoId) {
         
         const form = document.getElementById('formProducto');
         const botonSubmit = form.querySelector('button[type="submit"]');
-        
+
+        // Scroll hasta el formulario para que el admin lo vea
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
         botonSubmit.innerHTML = '<i class="fas fa-save"></i> Actualizar Producto';
-        
-        form.onsubmit = async (e) => {
+
+        // Eliminar TODOS los listeners anteriores clonando el form
+        const formNuevo = form.cloneNode(true);
+        form.parentNode.replaceChild(formNuevo, form);
+        const formActivo = document.getElementById('formProducto');
+        const botonActivo = formActivo.querySelector('button[type="submit"]');
+        botonActivo.innerHTML = '<i class="fas fa-save"></i> Actualizar Producto';
+
+        // Re-adjuntar el uploader de imagen al nuevo form
+        document.getElementById('imagenArchivo').addEventListener('change', (ev) => {
+            const file = ev.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evr) => {
+                imagenBase64 = evr.target.result;
+                document.getElementById('imagenPreviewImg').src = imagenBase64;
+                document.getElementById('imagenPreview').style.display = 'flex';
+                document.getElementById('imagen').value = '';
+            };
+            reader.readAsDataURL(file);
+        });
+        document.getElementById('imagen').addEventListener('input', () => {
+            if (document.getElementById('imagen').value) {
+                imagenBase64 = null;
+                document.getElementById('imagenArchivo').value = '';
+                document.getElementById('imagenPreview').style.display = 'none';
+            }
+        });
+        document.getElementById('quitarImagen').addEventListener('click', () => {
+            imagenBase64 = null;
+            document.getElementById('imagenArchivo').value = '';
+            document.getElementById('imagenPreview').style.display = 'none';
+        });
+
+        formActivo.onsubmit = async (e) => {
             e.preventDefault();
 
             const nombre     = document.getElementById('nombre').value.trim();
@@ -537,12 +573,12 @@ function editarProducto(productoId) {
                 }
 
                 mostrarNotificacion('✅ Producto actualizado correctamente', 'success');
-                form.reset();
+                formActivo.reset();
                 imagenBase64 = null;
                 const prev = document.getElementById('imagenPreview');
                 if (prev) prev.style.display = 'none';
-                botonSubmit.innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
-                form.onsubmit = agregarProducto;
+                botonActivo.innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
+                formActivo.onsubmit = agregarProducto;
 
                 // Recargar panel admin en segundo plano (sin esperar)
                 cargarProductosAdmin();
