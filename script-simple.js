@@ -323,8 +323,8 @@ async function agregarProducto(e) {
         const imgInput = document.getElementById('imagen');
         if (imgInput) imgInput.setAttribute('required', '');
 
-        // Recargar panel admin en segundo plano (sin esperar)
-        cargarProductosAdmin();
+        // Actualizar panel admin localmente sin ir a Firebase
+        renderAdminProductos();
     } catch (error) {
         mostrarNotificacion('Error al agregar producto: ' + error.message, 'error');
     }
@@ -425,6 +425,42 @@ function filtrarProductos() {
 // ========================================
 // PANEL ADMIN
 // ========================================
+
+function renderAdminProductos() {
+    const productosAdmin = document.getElementById('productosAdmin');
+    if (!productosAdmin) return;
+
+    const misProductos = productosActuales.filter(p => p.usuarioId === usuarioActual?.uid);
+
+    if (misProductos.length === 0) {
+        productosAdmin.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: #9ca3af;">
+                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                <p>No has agregado productos aún</p>
+            </div>
+        `;
+        return;
+    }
+
+    productosAdmin.innerHTML = misProductos.map(producto => `
+        <div class="admin-producto-item">
+            <div class="admin-producto-info">
+                <h3>${producto.nombre}</h3>
+                <p><strong>Categoría:</strong> ${producto.categoria}</p>
+                <p><strong>Precio:</strong> $${formatearPrecioCOP(producto.precio)}</p>
+                <p><strong>Link:</strong> <a href="${producto.linkCompra}" target="_blank" style="color: #d946a6;">Ver link</a></p>
+            </div>
+            <div class="admin-producto-actions">
+                <button class="btn-edit" onclick="editarProducto('${producto.id}')">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="btn-danger" onclick="eliminarProducto('${producto.id}')">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
 
 function cargarProductosAdmin() {
     const productosAdmin = document.getElementById('productosAdmin');
@@ -580,8 +616,8 @@ function editarProducto(productoId) {
                 botonActivo.innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
                 formActivo.onsubmit = agregarProducto;
 
-                // Recargar panel admin en segundo plano (sin esperar)
-                cargarProductosAdmin();
+                // Actualizar panel admin localmente sin ir a Firebase
+                renderAdminProductos();
             } catch (error) {
                 mostrarNotificacion('Error al actualizar: ' + error.message, 'error');
             }
