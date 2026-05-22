@@ -97,7 +97,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
             cargarProductos();
         })
         .catch((error) => {
-            mostrarNotificacion('Error: Usuario no encontrado ¡Registrate!' );
+            mostrarNotificacion('Error: ' + error.message, 'error');
         });
 });
 
@@ -281,20 +281,33 @@ async function agregarProducto(e) {
         return;
     }
     
+    const nombre    = document.getElementById('nombre').value.trim();
+    const categoria = document.getElementById('categoria').value.trim();
+    const precio    = parsearPrecioCOP(document.getElementById('precio').value);
+    const descripcion = document.getElementById('descripcion').value.trim();
+    const imagen    = imagenBase64 || document.getElementById('imagen').value.trim();
+    const linkCompra = document.getElementById('linkCompra').value.trim();
+
+    // Validación: no guardar si faltan campos obligatorios
+    if (!nombre || !categoria || !precio || !imagen || !linkCompra) {
+        mostrarNotificacion('⚠️ Completa todos los campos obligatorios', 'error');
+        return;
+    }
+
     const producto = {
-        nombre: document.getElementById('nombre').value,
-        categoria: document.getElementById('categoria').value,
-        precio: parsearPrecioCOP(document.getElementById('precio').value),
-        descripcion: document.getElementById('descripcion').value,
-        imagen: imagenBase64 || document.getElementById('imagen').value,
-        linkCompra: document.getElementById('linkCompra').value,
+        nombre,
+        categoria,
+        precio,
+        descripcion,
+        imagen,
+        linkCompra,
         usuarioId: usuarioActual.uid,
         email: usuarioActual.email,
         fechaCreacion: new Date().toISOString()
     };
     
     try {
-        database.ref('productos').push().set(producto);
+        await database.ref('productos').push().set(producto);
         
         mostrarNotificacion('✅ Producto agregado exitosamente', 'success');
         document.getElementById('formProducto').reset();
@@ -483,23 +496,35 @@ function editarProducto(productoId) {
         
         form.onsubmit = async (e) => {
             e.preventDefault();
-            
+
+            const nombre     = document.getElementById('nombre').value.trim();
+            const categoria  = document.getElementById('categoria').value.trim();
+            const precio     = parsearPrecioCOP(document.getElementById('precio').value);
+            const descripcion = document.getElementById('descripcion').value.trim();
+            const imagen     = imagenBase64 || document.getElementById('imagen').value.trim();
+            const linkCompra = document.getElementById('linkCompra').value.trim();
+
+            // Validación: no guardar si faltan campos obligatorios
+            if (!nombre || !categoria || !precio || !imagen || !linkCompra) {
+                mostrarNotificacion('⚠️ Completa todos los campos obligatorios', 'error');
+                return;
+            }
+
             const productoActualizado = {
-                nombre: document.getElementById('nombre').value,
-                categoria: document.getElementById('categoria').value,
-                precio: parsearPrecioCOP(document.getElementById('precio').value),
-                descripcion: document.getElementById('descripcion').value,
-                imagen: imagenBase64 || document.getElementById('imagen').value,
-                linkCompra: document.getElementById('linkCompra').value,
+                nombre, categoria, precio, descripcion,
+                imagen, linkCompra,
                 usuarioId: usuarioActual.uid,
                 email: usuarioActual.email,
                 fechaCreacion: producto.fechaCreacion
             };
             
             try {
-                database.ref(`productos/${productoId}`).set(productoActualizado);
+                await database.ref(`productos/${productoId}`).set(productoActualizado);
                 mostrarNotificacion('✅ Producto actualizado correctamente', 'success');
                 form.reset();
+                imagenBase64 = null;
+                const prev = document.getElementById('imagenPreview');
+                if (prev) prev.style.display = 'none';
                 botonSubmit.innerHTML = '<i class="fas fa-plus"></i> Agregar Producto';
                 form.onsubmit = agregarProducto;
                 cargarProductosAdmin();
