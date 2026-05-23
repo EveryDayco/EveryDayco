@@ -196,7 +196,6 @@ function configurarEventListeners() {
 
     // --- Uploader de imagen ---
     const imagenArchivo = document.getElementById('imagenArchivo');
-    const imagenUrlInput = document.getElementById('imagen');
     const imagenPreview = document.getElementById('imagenPreview');
     const imagenPreviewImg = document.getElementById('imagenPreviewImg');
     const quitarImagen = document.getElementById('quitarImagen');
@@ -209,26 +208,14 @@ function configurarEventListeners() {
             imagenBase64 = ev.target.result;
             imagenPreviewImg.src = imagenBase64;
             imagenPreview.style.display = 'flex';
-            imagenUrlInput.value = '';
-            imagenUrlInput.removeAttribute('required');
-            imagenUrlInput.value = '';
         };
         reader.readAsDataURL(file);
-    });
-
-    imagenUrlInput.addEventListener('input', () => {
-        if (imagenUrlInput.value) {
-            imagenBase64 = null;
-            imagenArchivo.value = '';
-            imagenPreview.style.display = 'none';
-        }
     });
 
     quitarImagen.addEventListener('click', () => {
         imagenBase64 = null;
         imagenArchivo.value = '';
         imagenPreview.style.display = 'none';
-        // required lo maneja la validación manual, no el atributo HTML
     });
     document.getElementById('searchInput').addEventListener('input', filtrarProductos);
     document.getElementById('categoryFilter').addEventListener('change', filtrarProductos);
@@ -286,12 +273,12 @@ async function agregarProducto(e) {
     const categoria = document.getElementById('categoria').value.trim();
     const precio    = parsearPrecioCOP(document.getElementById('precio').value);
     const descripcion = document.getElementById('descripcion').value.trim();
-    const imagen    = imagenBase64 || document.getElementById('imagen').value.trim();
+    const imagen    = imagenBase64 || '';
     const linkCompra = document.getElementById('linkCompra').value.trim();
 
     // Validación: no guardar si faltan campos obligatorios
     if (!nombre || !categoria || !precio || !imagen || !linkCompra) {
-        mostrarNotificacion('⚠️ Completa todos los campos obligatorios', 'error');
+        mostrarNotificacion('⚠️ Completa todos los campos. Recuerda subir una imagen.', 'error');
         return;
     }
 
@@ -530,7 +517,10 @@ function editarProducto(productoId) {
         document.getElementById('categoria').value = producto.categoria;
         document.getElementById('precio').value = formatearPrecioCOP(producto.precio);
         document.getElementById('descripcion').value = producto.descripcion;
-        document.getElementById('imagen').value = producto.imagen;
+        // Mostrar preview de imagen existente
+        imagenBase64 = producto.imagen;
+        document.getElementById('imagenPreviewImg').src = producto.imagen;
+        document.getElementById('imagenPreview').style.display = 'flex';
         document.getElementById('linkCompra').value = producto.linkCompra;
         
         const form = document.getElementById('formProducto');
@@ -561,13 +551,6 @@ function editarProducto(productoId) {
             };
             reader.readAsDataURL(file);
         });
-        document.getElementById('imagen').addEventListener('input', () => {
-            if (document.getElementById('imagen').value) {
-                imagenBase64 = null;
-                document.getElementById('imagenArchivo').value = '';
-                document.getElementById('imagenPreview').style.display = 'none';
-            }
-        });
         document.getElementById('quitarImagen').addEventListener('click', () => {
             imagenBase64 = null;
             document.getElementById('imagenArchivo').value = '';
@@ -586,7 +569,7 @@ function editarProducto(productoId) {
 
             // Validación: no guardar si faltan campos obligatorios
             if (!nombre || !categoria || !precio || !imagen || !linkCompra) {
-                mostrarNotificacion('⚠️ Completa todos los campos obligatorios', 'error');
+                mostrarNotificacion('⚠️ Completa todos los campos. Recuerda subir una imagen.', 'error');
                 return;
             }
 
