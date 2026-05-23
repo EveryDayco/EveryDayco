@@ -121,7 +121,7 @@ document.getElementById('signupForm')?.addEventListener('submit', function(e) {
     
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            mostrarNotificacion('¡Cuenta creada! y sesión iniciada ', 'success');
+            mostrarNotificacion('¡Cuenta creada! Ahora inicia sesión ;>', 'success');
             toggleForm();
             document.getElementById('signupForm').reset();
         })
