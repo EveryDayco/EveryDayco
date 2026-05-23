@@ -521,11 +521,11 @@ function cargarProductosAdmin() {
 }
 
 function editarProducto(productoId) {
-    database.ref(`productos/${productoId}`).once('value', (snapshot) => {
-        const producto = snapshot.val();
-        
-        if (!producto) return;
-        
+    // Usar datos locales — sin ir a Firebase
+    const producto = productosActuales.find(p => p.id === productoId);
+    if (!producto) return;
+
+    (() => {
         document.getElementById('nombre').value = producto.nombre;
         document.getElementById('categoria').value = producto.categoria;
         document.getElementById('precio').value = formatearPrecioCOP(producto.precio);
@@ -624,7 +624,7 @@ function editarProducto(productoId) {
                 mostrarNotificacion('Error al actualizar: ' + error.message, 'error');
             }
         };
-    });
+    })();
 }
 
 function eliminarProducto(productoId) {
