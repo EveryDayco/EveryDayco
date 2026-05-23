@@ -97,7 +97,7 @@ document.getElementById('loginForm')?.addEventListener('submit', function(e) {
             cargarProductos();
         })
         .catch((error) => {
-            mostrarNotificacion('Error: ' + error.message, 'error');
+            mostrarNotificacion('Error: cuenta no registrada ¡Registrate!', 'error');
         });
 });
 
@@ -121,7 +121,7 @@ document.getElementById('signupForm')?.addEventListener('submit', function(e) {
     
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            mostrarNotificacion('¡Cuenta creada! Ahora inicia sesión', 'success');
+            mostrarNotificacion('¡Cuenta creada! y sesión iniciada ', 'success');
             toggleForm();
             document.getElementById('signupForm').reset();
         })
