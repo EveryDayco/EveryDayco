@@ -296,7 +296,7 @@ async function agregarProducto(e) {
     
     try {
         // Notificación inmediata antes de esperar Firebase
-        mostrarNotificacion('✅ Producto agregado exitosamente', 'success');
+        mostrarNotificacion('✅ Producto agregado exitosamente, subiendo al servidor ¡Espera!', 'success');
 
         const ref = await database.ref('productos').push(producto);
         producto.id = ref.key;
@@ -583,7 +583,7 @@ function editarProducto(productoId) {
             
             try {
                 // Notificación inmediata antes de esperar Firebase
-                mostrarNotificacion('✅ Producto actualizado correctamente', 'success');
+                mostrarNotificacion('✅ Producto actualizado correctamente, subiendo al servidor ¡Espera!', 'success');
 
                 // Actualizar lista local sin volver a consultar Firebase
                 const idx = productosActuales.findIndex(p => p.id === productoId);
