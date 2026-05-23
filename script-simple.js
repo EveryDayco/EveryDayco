@@ -211,6 +211,7 @@ function configurarEventListeners() {
             imagenPreview.style.display = 'flex';
             imagenUrlInput.value = '';
             imagenUrlInput.removeAttribute('required');
+            imagenUrlInput.value = '';
         };
         reader.readAsDataURL(file);
     });
@@ -227,7 +228,7 @@ function configurarEventListeners() {
         imagenBase64 = null;
         imagenArchivo.value = '';
         imagenPreview.style.display = 'none';
-        imagenUrlInput.setAttribute('required', '');
+        // required lo maneja la validación manual, no el atributo HTML
     });
     document.getElementById('searchInput').addEventListener('input', filtrarProductos);
     document.getElementById('categoryFilter').addEventListener('change', filtrarProductos);
