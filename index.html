@@ -13,7 +13,7 @@
          NOTIFICACIÓN GLOBAL
          ======================================== -->
     <div id="notificacion" class="notificacion"></div>
-
+ 
     <!-- ========================================
          HEADER / NAVEGACIÓN
          ======================================== -->
@@ -21,7 +21,7 @@
         <div class="container">
             <div class="logo">
                 <i class="fas fa-sparkles"></i>
-                <h1>EveryDayco</h1>
+                <h1>Beauty Store</h1>
             </div>
             
             <nav class="navbar">
@@ -40,15 +40,15 @@
             </nav>
         </div>
     </header>
-
+ 
     <!-- ========================================
          SECCIÓN: TIENDA (VISTA CLIENTE)
          ======================================== -->
     <section id="tiendaSection" class="section active">
         <div class="container">
-            <h2 class="section-title">Bienvenid@ a EveryDayco</h2>
-            <p class="section-subtitle">¡Descubre los mejores productos infaltables en tu día a día!</p>
-
+            <h2 class="section-title">Bienvenido a Nuestra Tienda</h2>
+            <p class="section-subtitle">Descubre los mejores productos de belleza</p>
+ 
             <!-- Buscador y Filtros -->
             <div class="filtros-container">
                 <div class="search-box">
@@ -60,7 +60,7 @@
                         class="search-input"
                     >
                 </div>
-
+ 
                 <select id="categoryFilter" class="category-filter">
                     <option value="">Todas las Categorías</option>
                     <option value="Maquillaje">Maquillaje</option>
@@ -71,7 +71,7 @@
                     <option value="Complementos">Complementos</option>
                 </select>
             </div>
-
+ 
             <!-- Grid de Productos -->
             <div id="productosGrid" class="productos-grid">
                 <div class="loading">
@@ -79,7 +79,7 @@
                     <p>Cargando productos...</p>
                 </div>
             </div>
-
+ 
             <!-- Sin Productos -->
             <div id="sinProductos" class="sin-productos" style="display: none;">
                 <i class="fas fa-inbox"></i>
@@ -87,14 +87,14 @@
             </div>
         </div>
     </section>
-
+ 
     <!-- ========================================
          SECCIÓN: ADMIN
          ======================================== -->
     <section id="adminSection" class="section">
         <div class="container">
             <h2 class="section-title">Panel de Administración</h2>
-
+ 
             <div class="admin-layout">
                 <!-- Formulario Agregar Producto -->
                 <div class="admin-form-container">
@@ -105,7 +105,7 @@
                             <label for="nombre">Nombre del Producto *</label>
                             <input type="text" id="nombre" required placeholder="Ej: Labial Rojo Premium">
                         </div>
-
+ 
                         <div class="form-group">
                             <label for="categoria">Categoría *</label>
                             <select id="categoria" required>
@@ -118,17 +118,17 @@
                                 <option value="Complementos">Complementos</option>
                             </select>
                         </div>
-
+ 
                         <div class="form-group">
                             <label for="precio">Precio (COP) *</label>
                             <input type="text" id="precio" required placeholder="Ej: 69.000">
                         </div>
-
+ 
                         <div class="form-group">
                             <label for="descripcion">Descripción *</label>
                             <textarea id="descripcion" required placeholder="Describe el producto..."></textarea>
                         </div>
-
+ 
                         <div class="form-group">
                             <label>Imagen del Producto *</label>
                             <div class="imagen-upload-container">
@@ -139,26 +139,26 @@
                                     <input type="file" id="imagenArchivo" accept="image/*" style="display:none">
                                 </div>
                                 <div class="upload-divider">ó</div>
-                                <input type="url" id="imagen" placeholder="Pegar URL de imagen (https://...)" style="margin-top:0">
+                                <input type="url" id="imagen" placeholder="Pegar URL de imagen (https://...)" style="margin-top:0" autocomplete="off">
                                 <div id="imagenPreview" class="imagen-preview" style="display:none">
                                     <img id="imagenPreviewImg" src="" alt="Vista previa">
                                     <button type="button" id="quitarImagen" class="btn-quitar-imagen">✕ Quitar</button>
                                 </div>
                             </div>
                         </div>
-
+ 
                         <div class="form-group">
                             <label for="linkCompra">Link de Compra (Tu Link de Afiliado) *</label>
                             <input type="url" id="linkCompra" required placeholder="https://amazon.com/mi-link-afiliado">
                             <small>💡 Usa tus links de afiliado para ganar comisiones</small>
                         </div>
-
+ 
                         <button type="submit" class="btn-primary btn-full">
                             <i class="fas fa-plus"></i> Agregar Producto
                         </button>
                     </form>
                 </div>
-
+ 
                 <!-- Lista de Productos del Admin -->
                 <div class="admin-productos-container">
                     <h3><i class="fas fa-list"></i> Tus Productos</h3>
@@ -169,14 +169,14 @@
             </div>
         </div>
     </section>
-
+ 
     <!-- ========================================
          MODAL: LOGIN / SIGNUP
          ======================================== -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-
+ 
             <!-- Formulario Login -->
             <form id="loginForm" class="auth-form active-form">
                 <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
@@ -188,7 +188,7 @@
                 
                 <p class="auth-toggle">¿No tienes cuenta? <a href="#" id="toggleSignup">Crear una</a></p>
             </form>
-
+ 
             <!-- Formulario Signup -->
             <form id="signupForm" class="auth-form" style="display: none;">
                 <h2><i class="fas fa-user-plus"></i> Crear Cuenta</h2>
@@ -203,14 +203,14 @@
             </form>
         </div>
     </div>
-
+ 
     <!-- ========================================
          MODAL: DETALLE PRODUCTO
          ======================================== -->
     <div id="detalleModal" class="modal">
         <div class="modal-content modal-detalle">
             <span class="close">&times;</span>
-
+ 
             <div class="detalle-layout">
                 <img id="detalleImagen" src="" alt="Producto" class="detalle-imagen">
                 
@@ -227,12 +227,12 @@
             </div>
         </div>
     </div>
-
+ 
        <!-- Firebase SDK (compat - expone objeto global firebase) -->
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
-
+ 
 <!-- Scripts de la app -->
 <script src="config-simple.js"></script>
 <script src="script-simple.js"></script>
