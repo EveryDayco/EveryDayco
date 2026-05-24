@@ -1006,3 +1006,75 @@ a, button, [role="button"], .btn-nav, .btn-primary, .btn-comprar, .btn-detalles,
     background: #dc2626;
     color: white;
 }
+
+/* Ajustes generales para todos los modales en móvil */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+
+  /* Específico para el modal de detalle */
+  .modal-detalle {
+    max-width: 95%;
+  }
+
+  .detalle-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .detalle-imagen {
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .detalle-info h2 {
+    font-size: 1.3rem;
+  }
+
+  .detalle-precio {
+    font-size: 1.5rem;
+  }
+
+  .btn-comprar-modal {
+    font-size: 1rem;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Botón de cierre más grande y táctil */
+  .close {
+    font-size: 2rem;
+    top: 0.5rem;
+    right: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+/* Para pantallas muy pequeñas (≤480px) */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 98%;
+    padding: 1rem;
+  }
+
+  .detalle-imagen {
+    height: 180px;
+  }
+
+  .detalle-info h2 {
+    font-size: 1.2rem;
+  }
+
+  .detalle-precio {
+    font-size: 1.3rem;
+  }
+
+  .btn-comprar-modal {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+}
